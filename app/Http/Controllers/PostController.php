@@ -61,7 +61,41 @@ class PostController extends Controller
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getmessage()], 403);
         }
-
-        //delete
+       
     }
+
+
+     //retrieve all posts
+
+     public function getAllPosts(){
+        try {
+            $post = Post::all();
+            return response()->json(['post' => $posts], 200);
+       
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getmessage()], 403);
+        }       
+    }
+
+
+    //get a post
+    public function getPost($post_id){
+        try {
+            $post = Post::with('user', 'comment', 'likes')->where('id', $post_id)->first();
+            return response()->json(['post' => $post], 200);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getmessage()], 403);
+        }  
+    }
+
+     //delete
+     public function deletePost(Request $request, $post_id){
+        try {
+           $post - Post::find($post_id);
+           $post->delete();
+           return response()->json(['message' => 'post deleted successfuly'], 200);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getmessage()], 403);
+        } 
+     }
 }
